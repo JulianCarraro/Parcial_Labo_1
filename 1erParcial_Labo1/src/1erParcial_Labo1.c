@@ -185,6 +185,7 @@ int main(void) {
 					printf("\nLa cantidad de censistas activos con la zona pendiente es: %d", censistasActivosZonaPendiente);
 					break;
 				case 12:
+					printf("\nRANELAGH\n");
 					ordenarPorApellidoYNombre(censista, LEN_CENSISTAS, zona, LEN_ZONAS);
 					mostrarCensistasRanelagh(censista, LEN_CENSISTAS, zona, LEN_ZONAS);
 					break;

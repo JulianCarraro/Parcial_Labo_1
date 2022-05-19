@@ -595,10 +595,10 @@ int cargaForzadaCensistas(eCensista array[], int len)
 	int retorno = -1;
 	int i;
 
-	eCensista lista[8] = {{2000, "Julian", "Zalvarez", {2000,1,31}, 22, {365, 1334}, LIBERADO, OCUPADO},
+	eCensista lista[8] = {{2000, "Julian", "Alvarez", {2000,1,31}, 22, {365, 1334}, LIBERADO, OCUPADO},
 							{2001, "Marcelo", "Gallardo", {1976,1,18}, 46, {400, 4011}, LIBERADO, OCUPADO},
 							{2002, "Gonzalo", "Montiel", {1997,1,1}, 25, {789, 7990}, LIBERADO, OCUPADO},
-							{2003, "Rafael", "Worre", {1995,9,15}, 26, {121, 1295}, LIBERADO, OCUPADO},
+							{2003, "Rafael", "Borre", {1995,9,15}, 26, {121, 1295}, LIBERADO, OCUPADO},
 							{2004, "Lucas", "Pratto", {1988,6,4}, 33, {210, 1075}, LIBERADO, OCUPADO},
 							{2005, "Enzo", "Perez", {1986,2,22}, 36, {910, 9320}, LIBERADO, OCUPADO},
 							{2006, "Milton", "Casco", {1988,4,11}, 34, {755, 7511}, LIBERADO, OCUPADO},
