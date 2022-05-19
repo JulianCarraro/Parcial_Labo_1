@@ -72,6 +72,4 @@ int ordenarPorApellidoYNombre(eCensista array[], int len, eZona arrayZona[], int
 
 int mostrarCensistasRanelagh(eCensista array[], int len, eZona arrayZona[], int lenZonas);
 
-
-
 #endif /* ZONA_H_ */
