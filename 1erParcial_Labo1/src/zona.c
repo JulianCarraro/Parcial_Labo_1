@@ -20,6 +20,7 @@
 #define INACTIVO 3
 #define PENDIENTE 1
 #define FINALIZADO 2
+#define LEN_CENSISTAS 15
 #define LEN_ZONAS 15
 #define LEN_LOCALIDADES 5
 
@@ -632,10 +633,10 @@ int cargaForzadaZonas(eZona array[], int len)
 
 	eZona lista[8] = {{5000, {136,137,365,366}, 2, 0, 0, 0, PENDIENTE, 0, OCUPADO},
 							{5001, {210,211,490,491}, 1, 0, 0, 0, PENDIENTE, 0, OCUPADO},
-							{5002, {290,291,565,566}, 3, 0, 0, 0, PENDIENTE, 0, OCUPADO},
+							{5002, {290,291,565,566}, 2, 0, 0, 0, PENDIENTE, 0, OCUPADO},
 							{5003, {410,411,324,325}, 4, 0, 0, 0, PENDIENTE, 0, OCUPADO},
 							{5004, {761,762,100,101}, 5, 0, 0, 0, PENDIENTE, 0, OCUPADO},
-							{5005, {542,543,111,112}, 1, 0, 0, 0, PENDIENTE, 0, OCUPADO},
+							{5005, {542,543,111,112}, 2, 0, 0, 0, PENDIENTE, 0, OCUPADO},
 							{5006, {701,702,211,212}, 2, 0, 0, 0, PENDIENTE, 0, OCUPADO},
 							{5007, {292,293,575,576}, 3, 0, 0, 0, PENDIENTE, 0, OCUPADO}};
 
@@ -841,3 +842,117 @@ int hayZonaPendienteAsignada(eZona array[], int len, eCensista arrayCensistas[],
 	return retorno;
 }
 
+int ordenarPorApellidoYNombre(eCensista array[], int len, eZona arrayZona[], int lenZona)
+{
+	int retorno = -1;
+	int i;
+	int j;
+	eCensista aux;
+//	int orden;
+	int estaOrdenado;
+
+	if (array != NULL && len > 0 && arrayZona != NULL && lenZona > 0)
+	{
+		for (i = 0; i < lenZona; i++)
+		{
+			if(arrayZona[i].isEmpty == 0 && arrayZona[i].localidad == 2)
+			{
+				do
+				{
+					estaOrdenado = 1;
+					len--;
+					for(j = 0; j < len; j++)
+					{
+						if(stricmp(array[j].apellido, array[j + 1].apellido) > 0)
+						{
+							aux = array[j];
+							array[j] = array[j + 1];
+							array[j + 1] = aux;
+							estaOrdenado = 0;
+						}
+						else
+						{
+							if(stricmp(array[j].apellido, array[j + 1].apellido) == 0 &&
+									stricmp(array[j].nombre, array[j + 1].nombre) > 0)
+							{
+								aux = array[j];
+								array[j] = array[j + 1];
+								array[j + 1] = aux;
+								estaOrdenado = 0;
+							}
+						}
+					}
+
+				}while(estaOrdenado == 0);
+
+			}
+		}
+
+	}
+
+	return retorno;
+}
+
+int censistasActivosConZonaPendiente(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
+{
+	int contador;
+
+	contador = 0;
+
+	if (array != NULL && len > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if(array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado == ACTIVO)
+					{
+						contador++;
+					}
+				}
+			}
+		}
+	}
+
+	return contador;
+}
+
+/// @brief --> Esta funcion muestra todos los pasajeros cargados
+///
+/// @param --> array Puntero al espacio de memoria donde se buscaran los censistas a mostrar
+/// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion retorna 0 si se verifico correctamente o -1 si no fue asi
+int mostrarCensistasRanelagh(eCensista array[], int len, eZona arrayZona[], int lenZonas)
+{
+	int retorno = -1;
+
+//	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
+
+	if(array != NULL && len >0)
+	{
+		printTitle();
+		for(int i = 0; i < len; i++)
+		{
+			if(array[i].isEmpty == OCUPADO)
+			{
+//				mostrarCensistaRanelagh(array[i]);
+				for(int j = 0; j < lenZonas; j++)
+				{
+					if(array[i].idCensista == arrayZona[j].idCensista && arrayZona[j].localidad == 2)
+					{
+						printf("|%*d|%*s|%*s|%*d/%*d/%*d|%*d|%*d|%*d|\n", -15, array[i].idCensista, -15, array[i].nombre, -15,
+								array[i].apellido, 2, array[i].fecha.diaNacimiento, 2,
+								array[i].fecha.mesNacimiento, -14, array[i].fecha.anioNacimiento, -15,
+								array[i].edad, -17, array[i].direccion.calle, -15, array[i].direccion.numeroDeCasa);
+						break;
+					}
+				}
+			}
+		}
+		printf("+----------------------------------------------------------------------------------------------------------------------+\n");
+		retorno = 0;
+	}
+	return retorno;
+}

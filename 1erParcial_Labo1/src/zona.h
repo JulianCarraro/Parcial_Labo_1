@@ -66,4 +66,12 @@ int mostrarZonasPendientesAsignadas(eZona array[], int len, eCensista arrayCensi
 
 int hayZonaPendienteAsignada(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
 
+int censistasActivosConZonaPendiente(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
+
+int ordenarPorApellidoYNombre(eCensista array[], int len, eZona arrayZona[], int lenZona);
+
+int mostrarCensistasRanelagh(eCensista array[], int len, eZona arrayZona[], int lenZonas);
+
+
+
 #endif /* ZONA_H_ */

@@ -74,4 +74,5 @@ int subMenuDireccion(int * opcionMenu);
 
 //int ordenarPorEdad(eCensista array[], int len);
 
+
 #endif /* CENSISTA_H_ */

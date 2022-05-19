@@ -29,6 +29,7 @@ int main(void) {
 	int idZona;
 	int flagCargaForzadaCensista = 0;
 	int flagCargaForzadaZona = 0;
+	int censistasActivosZonaPendiente;
 
 	inicializarCensistas(censista, LEN_CENSISTAS);
 	inicializarZonas(zona, LEN_ZONAS);
@@ -180,12 +181,20 @@ int main(void) {
 					}
 					break;
 				case 11:
+					censistasActivosZonaPendiente = censistasActivosConZonaPendiente(zona, LEN_ZONAS, censista, LEN_CENSISTAS);
+					printf("\nLa cantidad de censistas activos con la zona pendiente es: %d", censistasActivosZonaPendiente);
+					break;
+				case 12:
+					ordenarPorApellidoYNombre(censista, LEN_CENSISTAS, zona, LEN_ZONAS);
+					mostrarCensistasRanelagh(censista, LEN_CENSISTAS, zona, LEN_ZONAS);
+					break;
+				case 13:
 					break;
 			}
 
 		}
 
-	}while(opcionMenu != 11);
+	}while(opcionMenu != 13);
 
 	return EXIT_SUCCESS;
 }

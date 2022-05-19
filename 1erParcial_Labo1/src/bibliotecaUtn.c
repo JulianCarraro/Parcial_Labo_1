@@ -305,10 +305,12 @@ int menuPrincipal(int * opcionMenu)
 	printf("8. MOSTRAR ZONAS \n");
 	printf("9. CARGA FORZADA DE CENSISTAS \n");
 	printf("10. CARGA FORZADA DE ZONAS \n");
-	printf("11. SALIR \n");
+	printf("11. CANTIDAD DE CENSISTAS ACTIVOS CON ZONA PENDIENTE\n");
+	printf("12. ORDENAR ALFABETICAMENTE APELLIDO Y NOMBRE DE RANELAGH\n");
+	printf("13. SALIR \n");
 
 	if(getInt(&auxOpcion, "Ingrese una opcion: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
-			11, 1, 5)==0)
+			13, 1, 5)==0)
 	{
 		*opcionMenu = auxOpcion;
 		retorno = 0;
