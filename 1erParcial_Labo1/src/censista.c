@@ -610,8 +610,8 @@ int cargaForzadaCensistas(eCensista array[], int len)
 		for(i = 0; i < 8; i++)
 		{
 			array[i] = lista[i];
-			retorno = 0;
 		}
+		retorno = 0;
 	}
 
 	return retorno;
@@ -695,4 +695,78 @@ int subMenuDireccion(int * opcionMenu)
 
 	return retorno;
 }
+
+
+
+//int ordenarPorEdad(eCensista array[], int len)
+//{
+//	int retorno = -1;
+//	int i;
+//	eCensista aux;
+//	int orden;
+//	int estaOrdenado;
+//
+//	if (array != NULL && len > 0)
+//	{
+//		if(getInt(&orden, "\n1) Descendente\n2) Ascendente \nDe que forma desea ordenar sus pasajeros?: ",
+//				"\nError, ingreso una opcion incorrecta", 2,
+//				1, 3)==0)
+//		{
+//			retorno = 0;
+//		}
+//
+//		do
+//		{
+//			estaOrdenado = 1;
+//			len--;
+//			for (i = 0; i < len; i++)
+//			{
+//				if(orden == 2)
+//				{
+//					if(array[i].edad > array[i + 1].edad)
+//					{
+//						aux = array[i];
+//						array[i] = array[i + 1];
+//						array[i + 1] = aux;
+//						estaOrdenado = 0;
+//					}
+//					else
+//					{
+//						if(array[i].edad == array[i + 1].edad &&
+//								stricmp(array[i].apellido, array[i + 1].apellido) > 0)
+//						{
+//							aux = array[i];
+//							array[i] = array[i + 1];
+//							array[i + 1] = aux;
+//							estaOrdenado = 0;
+//						}
+//					}
+//				}
+//				else
+//				{
+//					if(array[i].edad < array[i + 1].edad)
+//					{
+//						aux = array[i];
+//						array[i] = array[i + 1];
+//						array[i + 1] = aux;
+//						estaOrdenado = 0;
+//					}
+//					else
+//					{
+//						if(array[i].edad == array[i + 1].edad &&
+//								stricmp(array[i].apellido, array[i + 1].apellido) < 0)
+//						{
+//							aux = array[i];
+//							array[i] = array[i + 1];
+//							array[i + 1] = aux;
+//							estaOrdenado = 0;
+//						}
+//					}
+//				}
+//			}
+//		}while(estaOrdenado == 0);
+//	}
+//
+//	return retorno;
+//}
 

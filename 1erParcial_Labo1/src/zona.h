@@ -56,6 +56,14 @@ int cargaForzadaZonas(eZona array[], int len);
 
 int menuModificacionesZonas(int * opcionMenu);
 
-//int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
+int buscarZonaPendienteNoAsignadaPorId(eZona array[], int len, int idZona, eCensista arrayCensistas[], int lenCensistas);
+
+int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
+
+int buscarZonaPendienteAsignadaPorId(eZona array[], int len, int idZona, eCensista arrayCensistas[], int lenCensistas);
+
+int mostrarZonasPendientesAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
+
+int hayZonaPendienteAsignada(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
 
 #endif /* ZONA_H_ */

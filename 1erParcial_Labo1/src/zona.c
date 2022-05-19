@@ -340,11 +340,11 @@ int asignarZona(eZona array[], int len, int idZona, eCensista arrayCensistas[], 
 
 	if(array != NULL && len > 0 && arrayCensistas != NULL && lenCensistas > 0)
 	{
-		index = buscarZonaPendientePorId(array, len, idZona);
+		index = buscarZonaPendienteNoAsignadaPorId(array, len, idZona, arrayCensistas, lenCensistas);
 
 		if(index != -1)
 		{
-			mostrarCensistasLiberados(arrayCensistas, len);
+			mostrarCensistasLiberados(arrayCensistas, lenCensistas);
 			if(getInt(&auxIdCensista, "Ingrese el id del censista que desea ubicar en la zona: ",
 						"ERROR. Ingreso un id incorrecto\n\n", 3000, 1000, 3)==0)
 			{
@@ -365,7 +365,7 @@ int asignarZona(eZona array[], int len, int idZona, eCensista arrayCensistas[], 
 		}
 		else
 		{
-			printf("No hay zonas pendientes con ese ID");
+			printf("No hay zonas pendientes no asignadas con ese ID");
 		}
 	}
 
@@ -394,7 +394,7 @@ int cargarDatos(eZona array[], int len, int idZona, eCensista censistas[], int l
 
 	if(array != NULL && len > 0 && censistas != NULL && lenCensistas > 0)
 	{
-		index = buscarZonaPendientePorId(array, len, idZona);
+		index = buscarZonaPendienteAsignadaPorId(array, len, idZona, censistas, lenCensistas);
 
 		if(index != -1)
 		{
@@ -681,39 +681,163 @@ int menuModificacionesZonas(int * opcionMenu)
 
 }
 
-///// @brief --> Esta funcion muestra las zonas pendientes
+///// @brief --> Esta funcion busca una Zona Pendiente por el id
 /////
-/////// @param --> array Puntero al espacio de memoria donde se buscara las zonas pendientes
-/////// @param --> len Define el tamanio de la cadena
-///// @return --> Esta funcion no retorna nada
-//int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
-//{
-//	int retorno = -1;
-//
-//	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
-//
-//	if(array != NULL && len >0)
-//	{
-//
-//		for(int i = 0; i < len; i++)
-//		{
-//			if(array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
-//			{
-//				for(int j = 0; j < lenCensistas; j++)
-//				{
-//					if(array[i].idCensista == arrayCensistas[j].idCensista &&
-//							(arrayCensistas[j].estado == LIBERADO || arrayCensistas[j].estado == INACTIVO))
-//					printf("\n+-----------------------------------------------------------------------------------------------+");
-//					printf("\nID Zona: %d | Calle 1: %d | Calle 2: %d | Calle 3: %d | Calle 4: %d | Localidad: %s", array[i].idZona,
-//							array[i].calle[0], array[i].calle[1], array[i].calle[2], array[i].calle[3], localidades[array[i].localidad]);
-//					break;
-//				}
-//			}
-//		}
-//		printf("\n+-----------------------------------------------------------------------------------------------+\n");
-//		retorno = 0;
-//	}
-//
-//	return retorno;
-//}
+///// @param --> array Puntero al espacio de memoria donde se buscara la Zona
+///// @param --> len Define el tamanio de la cadena
+///// @param --> id recibe el id de la zona a buscar
+///// @return --> Esta funcion retorna el index de la zona encontrada
+int buscarZonaPendienteNoAsignadaPorId(eZona array[], int len, int idZona, eCensista arrayCensistas[], int lenCensistas)
+{
+	int retorno = -1;
+	if (array != NULL && len > 0 && idZona > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if (array[i].idZona == idZona && array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado != ACTIVO)
+					{
+						retorno = i;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/// @brief --> Esta funcion muestra las zonas pendientes no asignadas
+///
+///// @param --> array Puntero al espacio de memoria donde se buscara las zonas pendientes
+///// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion no retorna nada
+int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
+{
+	int retorno = -1;
+
+	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
+
+	if(array != NULL && len >0)
+	{
+
+		for(int i = 0; i < len; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado != ACTIVO)
+					{
+						printf("\n+-----------------------------------------------------------------------------------------------+");
+						printf("\nID Zona: %d | Calle 1: %d | Calle 2: %d | Calle 3: %d | Calle 4: %d | Localidad: %s", array[i].idZona,
+								array[i].calle[0], array[i].calle[1], array[i].calle[2], array[i].calle[3], localidades[array[i].localidad]);
+						break;
+					}
+				}
+			}
+		}
+		printf("\n+-----------------------------------------------------------------------------------------------+\n");
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+///// @brief --> Esta funcion busca una Zona Pendiente asignadas por el id
+/////
+///// @param --> array Puntero al espacio de memoria donde se buscara la Zona
+///// @param --> len Define el tamanio de la cadena
+///// @param --> id recibe el id de la zona a buscar
+///// @return --> Esta funcion retorna el index de la zona encontrada
+int buscarZonaPendienteAsignadaPorId(eZona array[], int len, int idZona, eCensista arrayCensistas[], int lenCensistas)
+{
+	int retorno = -1;
+	if (array != NULL && len > 0 && idZona > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if (array[i].idZona == idZona && array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado == ACTIVO)
+					{
+						retorno = i;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/// @brief --> Esta funcion muestra las zonas pendientes asignadas
+///
+///// @param --> array Puntero al espacio de memoria donde se buscara las zonas pendientes
+///// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion no retorna nada
+int mostrarZonasPendientesAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
+{
+	int retorno = -1;
+
+	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
+
+	if(array != NULL && len >0)
+	{
+
+		for(int i = 0; i < len; i++)
+		{
+			if(array[i].isEmpty == 0 && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado == ACTIVO)
+					{
+						printf("\n+-----------------------------------------------------------------------------------------------+");
+						printf("\nID Zona: %d | Calle 1: %d | Calle 2: %d | Calle 3: %d | Calle 4: %d | Localidad: %s", array[i].idZona,
+								array[i].calle[0], array[i].calle[1], array[i].calle[2], array[i].calle[3], localidades[array[i].localidad]);
+						break;
+					}
+				}
+			}
+		}
+		printf("\n+-----------------------------------------------------------------------------------------------+\n");
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+/// @brief --> Esta funcion busca en un array si hay zonas pendientes asignadas cargadas
+///
+/// @param --> array Puntero al espacio de memoria donde se buscara si hay alguna zona pendiente cargada
+/// @param --> len Define el tamaño de cadena
+/// @return --> Esta funcion retorna un 1 si se encontro algo cargado, y un 0 si no fue asi
+int hayZonaPendienteAsignada(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
+{
+	int retorno = 0;
+	if (array != NULL && len > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if(array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
+			{
+				for(int j = 0; j < lenCensistas; j++)
+				{
+					if(array[i].idCensista == arrayCensistas[j].idCensista && arrayCensistas[j].estado == ACTIVO)
+					{
+						retorno = 1;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
 

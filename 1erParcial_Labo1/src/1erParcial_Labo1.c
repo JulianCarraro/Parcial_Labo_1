@@ -27,6 +27,8 @@ int main(void) {
 	int auxIdZona = 1000;
 	int idCensista;
 	int idZona;
+	int flagCargaForzadaCensista = 0;
+	int flagCargaForzadaZona = 0;
 
 	inicializarCensistas(censista, LEN_CENSISTAS);
 	inicializarZonas(zona, LEN_ZONAS);
@@ -106,19 +108,27 @@ int main(void) {
 					}
 					break;
 				case 6:
-					if(hayZonaPendiente(zona, LEN_ZONAS) == 1)
+					if(hayAlgoCargado(censista, LEN_CENSISTAS)==1)
 					{
-						mostrarZonasPendientes(zona, LEN_ZONAS);
-						if(getInt(&auxIdZona, "Ingrese el ID de la zona que desea cargar los datos: ",
-									"ERROR. Ingreso un id incorrecto\n\n", 6000, 4000, 3)==0)
+						if(hayZonaPendienteAsignada(zona, LEN_ZONAS, censista, LEN_CENSISTAS) == 1)
 						{
-							idZona = auxIdZona;
+							printf("\nZonas Asignadas para cargar\n");
+							mostrarZonasPendientesAsignadas(zona, LEN_ZONAS, censista, LEN_CENSISTAS);
+							if(getInt(&auxIdZona, "Ingrese el ID de la zona que desea cargar los datos: ",
+										"ERROR. Ingreso un id incorrecto\n\n", 6000, 4000, 3)==0)
+							{
+								idZona = auxIdZona;
+							}
+							cargarDatos(zona, LEN_ZONAS, idZona, censista, LEN_CENSISTAS);
 						}
-						cargarDatos(zona, LEN_ZONAS, idZona, censista, LEN_CENSISTAS);
+						else
+						{
+							printf("\nNo hay zonas pendientes asignadas para cargar los datos");
+						}
 					}
 					else
 					{
-						printf("\nNo hay zonas pendientes para cargar los datos");
+						printf("\nNo hay censistas cargados");
 					}
 					break;
 				case 7:
@@ -142,10 +152,32 @@ int main(void) {
 					}
 					break;
 				case 9:
-					cargaForzadaCensistas(censista, LEN_CENSISTAS);
+					if(flagCargaForzadaCensista == 0)
+					{
+						if(cargaForzadaCensistas(censista, LEN_CENSISTAS)==0)
+						{
+							flagCargaForzadaCensista = 1;
+							printf("Se han cargado los censistas");
+						}
+					}
+					else
+					{
+						printf("Ya ingresaron la carga forzada de censistas anteriormente");
+					}
 					break;
 				case 10:
-					cargaForzadaZonas(zona, LEN_ZONAS);
+					if(flagCargaForzadaZona == 0)
+					{
+						if(cargaForzadaZonas(zona, LEN_ZONAS)==0)
+						{
+							flagCargaForzadaZona = 1;
+							printf("Se han cargado las zonas");
+						}
+					}
+					else
+					{
+						printf("Ya ingresaron la carga forzada de zonas anteriormente");
+					}
 					break;
 				case 11:
 					break;
