@@ -58,12 +58,18 @@ int buscarCensistaLiberadoPorId(eCensista array[], int len, int idCensista);
 
 int hayCensistaLibreCargado(eCensista array[], int len);
 
-int existeCensistaLiberadoPorId(eCensista pArray[], int len, int idCensista);
+//int existeCensistaLiberadoPorId(eCensista pArray[], int len, int idCensista);
 
 void mostrarCensistaLiberado(eCensista unCensista);
 
 int mostrarCensistasLiberados(eCensista array[], int len);
 
 int cargaForzadaCensistas(eCensista array[], int len);
+
+int menuModificaciones(int * opcionMenu);
+
+int subMenuFechaNacimiento(int * opcionMenu);
+
+int subMenuDireccion(int * opcionMenu);
 
 #endif /* CENSISTA_H_ */

@@ -40,15 +40,11 @@ int asignarZona(eZona array[], int len, int idZona, eCensista arrayCensistas[], 
 
 int cargarDatos(eZona array[], int len, int idZona, eCensista censistas[], int lenCensistas);
 
-//int buscarZonaPorId(eZona array[], int len, int idZona);
-
 int buscarZonaPendientePorId(eZona array[], int len, int idZona);
 
-//int buscarZonaPendientePorId(eZona array[], int len, int idZona, eCensista arrayDos[]);
+int buscarZonaPorId(eZona array[], int len, int idZona);
 
 int mostrarZonasCompleto(eZona array[], int len, eCensista censistas[], int lenCensistas);
-
-//void mostrarZonaPendientes(eZona unaZona);
 
 int mostrarZonasPendientes(eZona array[], int len);
 
@@ -57,5 +53,9 @@ int hayZonaPendiente(eZona array[], int len);
 int hayZonaCargada(eZona array[], int len);
 
 int cargaForzadaZonas(eZona array[], int len);
+
+int menuModificacionesZonas(int * opcionMenu);
+
+//int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas);
 
 #endif /* ZONA_H_ */

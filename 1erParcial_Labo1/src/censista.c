@@ -32,7 +32,7 @@ int incrementarId()
 
 /// @brief --> Esta funcion inicializa el array de censistas
 ///
-/// @param --> list Puntero al espacio de memoria donde se inicializara los datos
+/// @param --> lista Puntero al espacio de memoria donde se inicializara los datos
 /// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int inicializarCensistas(eCensista * lista, int len)
 {
@@ -49,6 +49,11 @@ int inicializarCensistas(eCensista * lista, int len)
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y carga los censistas
+///
+/// @param --> array Puntero al espacio de memoria donde se guardaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int cargarCensista(eCensista array[], int len) {
 	int retorno = -1;
 	int indexLibre;
@@ -155,6 +160,11 @@ int cargarCensista(eCensista array[], int len) {
 	return retorno;
 }
 
+/// @brief --> Esta funcion calcula la edad del censista
+///
+/// @param --> anioNacimiento Recibe el anio de nacimiento
+/// @param --> mesNacimiento Recibe el mes de nacimiento
+/// @return --> Esta funcion retorna la edad del censista
 int edadCensista(int anioNacimiento, int mesNacimiento)
 {
 	int anioActual = 2022;
@@ -172,7 +182,7 @@ int edadCensista(int anioNacimiento, int mesNacimiento)
 
 /// @brief --> Esta funcion busca un espacio libre en el array
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscara el lugar libre
+/// @param --> array Puntero al espacio de memoria donde se buscara el lugar libre
 /// @param --> len Define el tamanio de la cadena
 /// @return --> Esta funcion retorna un index libre
 int buscarIndexPorIsEmpty(eCensista array[], int len)
@@ -325,6 +335,7 @@ int modificarCensista(eCensista array[], int len, int idCensista)
 						case 5:
 							retorno = 0;
 							printf("\nSe han guardado los cambios\n");
+							break;
 					}
 				}
 
@@ -341,7 +352,7 @@ int modificarCensista(eCensista array[], int len, int idCensista)
 
 /// @brief --> Esta funcion muestra un censista
 ///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
+/// @param --> unCensista Recibe los datos del censista a mostrar
 /// @return --> Esta funcion no retorna nada
 void mostrarCensista(eCensista unCensista)
 {
@@ -368,7 +379,7 @@ void printTitle()
 
 /// @brief --> Esta funcion muestra todos los pasajeros cargados
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscaran los pasajeros a mostrar
+/// @param --> array Puntero al espacio de memoria donde se buscaran los censistas a mostrar
 /// @param --> len Define el tamanio de la cadena
 /// @return --> Esta funcion retorna 0 si se verifico correctamente o -1 si no fue asi
 int mostrarCensistas(eCensista array[], int len)
@@ -388,12 +399,12 @@ int mostrarCensistas(eCensista array[], int len)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca un pasajero por el id
+/// @brief --> Esta funcion busca un censista por el id
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscara el pasajero
+/// @param --> list Puntero al espacio de memoria donde se buscara el censista
 /// @param --> len Define el tamanio de la cadena
-/// @param --> id recibe el id del pasajero a buscar
-/// @return --> Esta funcion retorna el index del pasajero encontrado
+/// @param --> id recibe el id del censista a buscar
+/// @return --> Esta funcion retorna el index del censista encontrado
 int buscarCensistaPorId(eCensista array[], int len, int idCensista)
 {
 	int retorno = -1;
@@ -411,6 +422,12 @@ int buscarCensistaPorId(eCensista array[], int len, int idCensista)
 	return retorno;
 }
 
+/// @brief --> Esta funcion da de baja un censista
+///
+/// @param --> array Puntero al espacio de memoria donde se buscan los datos a borrar
+/// @param --> len Define el tamanio de la cadena
+/// @param --> idCensista Recibe el id del censista a borrar
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int bajaCensista(eCensista array[], int len, int idCensista) {
 	int retorno = -1;
 	int index;
@@ -440,14 +457,14 @@ int bajaCensista(eCensista array[], int len, int idCensista) {
 		}
     	else
     	{
-    		printf("No hay asociado con ese ID\n");
+    		printf("No hay censista con ese ID\n");
     	}
 	}
 
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca en un array si hay datos cargados
+/// @brief --> Esta funcion busca en un array si hay algun censista cargados
 ///
 /// @param --> array Puntero al espacio de memoria donde se buscara si hay algo cargado
 /// @param --> len Define el tamaño de cadena
@@ -469,12 +486,12 @@ int hayAlgoCargado(eCensista array[], int len)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca un pasajero por el id
+/// @brief --> Esta funcion busca un censista liberado por el id
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscara el pasajero
+/// @param --> list Puntero al espacio de memoria donde se buscara el censista
 /// @param --> len Define el tamanio de la cadena
-/// @param --> id recibe el id del pasajero a buscar
-/// @return --> Esta funcion retorna el index del pasajero encontrado
+/// @param --> id recibe el id del censista a buscar
+/// @return --> Esta funcion retorna el index del censista liberado encontrado
 int buscarCensistaLiberadoPorId(eCensista array[], int len, int idCensista)
 {
 	int retorno = -1;
@@ -492,7 +509,7 @@ int buscarCensistaLiberadoPorId(eCensista array[], int len, int idCensista)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca en un array si hay datos cargados
+/// @brief --> Esta funcion busca en un array si hay algun censista liberado cargados
 ///
 /// @param --> array Puntero al espacio de memoria donde se buscara si hay algo cargado
 /// @param --> len Define el tamaño de cadena
@@ -514,27 +531,27 @@ int hayCensistaLibreCargado(eCensista array[], int len)
 	return retorno;
 }
 
-int existeCensistaLiberadoPorId(eCensista pArray[], int len, int idCensista)
-{
-	int retorno = -1;
+//int existeCensistaLiberadoPorId(eCensista pArray[], int len, int idCensista)
+//{
+//	int retorno = -1;
+//
+//		if(pArray != NULL && len > 0)
+//		{
+//			for(int i = 0; i < len; i++)
+//			{
+//				if(pArray[i].estado == LIBERADO && pArray[i].idCensista == idCensista)
+//				{
+//					retorno = 0;
+//					break;
+//				}
+//			}
+//		}
+//	return retorno;
+//}
 
-		if(pArray != NULL && len > 0)
-		{
-			for(int i = 0; i < len; i++)
-			{
-				if(pArray[i].estado == LIBERADO && pArray[i].idCensista == idCensista)
-				{
-					retorno = 0;
-					break;
-				}
-			}
-		}
-	return retorno;
-}
-
-/// @brief --> Esta funcion muestra un censista
+/// @brief --> Esta funcion muestra un censista liberado
 ///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
+/// @param --> unCensista Recibe los datos del censista liberado a mostrar
 /// @return --> Esta funcion no retorna nada
 void mostrarCensistaLiberado(eCensista unCensista)
 {
@@ -547,9 +564,9 @@ void mostrarCensistaLiberado(eCensista unCensista)
 	}
 }
 
-/// @brief --> Esta funcion muestra todos los pasajeros cargados
+/// @brief --> Esta funcion muestra todos los censistas liberados cargados
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscaran los pasajeros a mostrar
+/// @param --> array Puntero al espacio de memoria donde se buscaran los censistas liberados a mostrar
 /// @param --> len Define el tamanio de la cadena
 /// @return --> Esta funcion retorna 0 si se verifico correctamente o -1 si no fue asi
 int mostrarCensistasLiberados(eCensista array[], int len)
@@ -596,6 +613,85 @@ int cargaForzadaCensistas(eCensista array[], int len)
 			retorno = 0;
 		}
 	}
+
+	return retorno;
+}
+
+/// @brief --> Esta funcion pide y muestra el menu de modificaciones
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int menuModificaciones(int * opcionMenu)
+{
+	int auxOpcion;
+	int retorno = -1;
+
+	printf("\n************MODIFICACIONES************\n\n");
+	printf("1. NOMBRE \n");
+	printf("2. APELLIDO \n");
+	printf("3. FECHA DE NACIMIENTO \n");
+	printf("4. DIRECCION \n");
+	printf("5. SALIR \n");
+
+	if(getInt(&auxOpcion, "Que desea modificar?: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
+			5, 1, 5)==0)
+	{
+		*opcionMenu = auxOpcion;
+		retorno = 0;
+	}
+
+
+	return retorno;
+
+}
+
+/// @brief --> Esta funcion pide y muestra el submenu de la fecha de nacimiento
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int subMenuFechaNacimiento(int * opcionMenu)
+{
+	int auxOpcion;
+	int retorno = -1;
+
+	printf("\n1. ANIO DE NACIMIENTO \n");
+	printf("2. MES DE NACIMIENTO \n");
+	printf("3. DIA DE NACIMIENTO \n");
+	printf("4. SALIR \n");
+
+
+	if(getInt(&auxOpcion, "Que desea modificar?: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
+			4, 1, 3)==0)
+	{
+		*opcionMenu = auxOpcion;
+		retorno = 0;
+	}
+
+
+	return retorno;
+}
+
+/// @brief --> Esta funcion pide y muestra el submenu de la fecha de nacimiento
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int subMenuDireccion(int * opcionMenu)
+{
+	int auxOpcion;
+	int retorno = -1;
+
+//	printf("\nFECHA DE NACIMIENTO\n\n");
+	printf("1. CALLE \n");
+	printf("2. NUMERO DE CASA \n");
+	printf("3. SALIR \n");
+
+	if(getInt(&auxOpcion, "Que desea modificar?: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
+			3, 1, 3)==0)
+	{
+		*opcionMenu = auxOpcion;
+		retorno = 0;
+	}
+
 
 	return retorno;
 }

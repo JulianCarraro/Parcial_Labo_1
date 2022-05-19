@@ -23,6 +23,9 @@
 #define LEN_ZONAS 15
 #define LEN_LOCALIDADES 5
 
+/// @brief --> Esta funcion va autoincrementando el id de la zona
+///
+/// @return --> Esta funcion retorna el id
 int incrementarIdZona()
 {
     static int id = 4000;
@@ -30,9 +33,10 @@ int incrementarIdZona()
     return id;
 }
 
-/// @brief --> Esta funcion inicializa el array de censistas
+/// @brief --> Esta funcion inicializa el array de zonas
 ///
-/// @param --> list Puntero al espacio de memoria donde se inicializara los datos
+/// @param --> lista Puntero al espacio de memoria donde se inicializara los datos
+/// @param --> len Define el tamanio de la cadena
 /// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int inicializarZonas(eZona lista[], int len)
 {
@@ -49,6 +53,11 @@ int inicializarZonas(eZona lista[], int len)
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y carga las zonas
+///
+/// @param --> array Puntero al espacio de memoria donde se guardaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int cargarZonas(eZona array[], int len)
 {
 	int retorno = -1;
@@ -75,7 +84,7 @@ int cargarZonas(eZona array[], int len)
 			mostrarLocalidades();
 
 			if(getInt(&auxLocalidad, "Ingrese una opcion: ",
-					"ERROR. Ingreso una opcion incorrecta\n\n", 999, 1, 3)==0)
+					"ERROR. Ingreso una opcion incorrecta\n\n", 5, 1, 3)==0)
 			{
 				array[indexLibre].localidad = auxLocalidad;
 				array[indexLibre].idZona = incrementarIdZona();
@@ -90,6 +99,9 @@ int cargarZonas(eZona array[], int len)
 	return retorno;
 }
 
+/// @brief --> Esta funcion muestra las localidades
+///
+/// @return --> Esta funcion no retorna nada
 void mostrarLocalidades()
 {
 	printf("\nLOCALIDADES\n\n");
@@ -102,9 +114,9 @@ void mostrarLocalidades()
 
 /// @brief --> Esta funcion busca un espacio libre en el array
 ///
-/// @param --> list Puntero al espacio de memoria donde se buscara el lugar libre
+/// @param --> array Puntero al espacio de memoria donde se buscara el lugar libre
 /// @param --> len Define el tamanio de la cadena
-/// @return --> Esta funcion retorna un index libre
+/// @return --> Esta funcion retorna el index libre
 int buscarIndexZonaPorIsEmpty(eZona array[], int len)
 {
 	int retorno = -1;
@@ -124,9 +136,157 @@ int buscarIndexZonaPorIsEmpty(eZona array[], int len)
 	return retorno;
 }
 
-/// @brief --> Esta funcion muestra un censista
+/// @brief --> Esta funcion pide y modifica las zonas
 ///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
+/// @param --> array Puntero al espacio de memoria donde se guardaran los datos
+/// @param --> len Define el tamanio de la cadena
+/// @param --> idZona Recibe el id de la zona a modificar
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int modificarZona(eZona array[], int len, int idZona)
+{
+	int retorno = -1;
+	int index;
+	int opcionMenu;
+	int auxId;
+	int auxCalleUno;
+	int auxCalleDos;
+	int auxCalleTres;
+	int auxCalleCuatro;
+	int auxLocalidad;
+
+	if (array != NULL && len > 0 && idZona > 0)
+	{
+		if(hayZonaCargada(array, len))
+		{
+			mostrarZonas(array, len);
+			if(getInt(&auxId, "Ingrese el id de la zona que desea modificar: ",
+					"Error, el id no es valido\n\n", 6000,
+					4000, 3)==0)
+			{
+				idZona = auxId;
+			}
+
+			index = buscarZonaPorId(array, len, idZona);
+
+			if(index != -1)
+			{
+				do
+				{
+					mostrarZona(array[index]);
+					if(menuModificacionesZonas(&opcionMenu)==0)
+					{
+						switch(opcionMenu)
+						{
+							case 1:
+								if(getInt(&auxCalleUno, "Ingrese la calle 1: ",
+										"Error, la calle no es valida\n\n", 999,
+										1, 3)==0)
+								{
+									array[index].calle[0] = auxCalleUno;
+								}
+								break;
+							case 2:
+								if(getInt(&auxCalleDos, "Ingrese la calle 2: ",
+										"Error, la calle no es valida\n\n", 999,
+										1, 3)==0)
+								{
+									array[index].calle[1] = auxCalleDos;
+								}
+								break;
+							case 3:
+								if(getInt(&auxCalleTres, "Ingrese la calle 3: ",
+										"Error, la calle no es valida\n\n", 999,
+										1, 3)==0)
+								{
+									array[index].calle[2] = auxCalleTres;
+								}
+								break;
+							case 4:
+								if(getInt(&auxCalleCuatro, "Ingrese la calle 4: ",
+										"Error, la calle no es valida\n\n", 999,
+										1, 3)==0)
+								{
+									array[index].calle[3] = auxCalleCuatro;
+								}
+								break;
+							case 5:
+								if(getInt(&auxLocalidad, "Ingrese la localidad: ",
+										"Error, la localidad no es valida\n\n", 5,
+										1, 3)==0)
+								{
+									array[index].localidad = auxLocalidad;
+								}
+								break;
+							case 6:
+								retorno = 0;
+								printf("\nSe han guardado los cambios\n");
+								break;
+						}
+					}
+
+				}while(opcionMenu != 6);
+
+
+			}
+			else
+			{
+				printf("No hay zona con ese ID\n");
+			}
+		}
+	}
+
+	return retorno;
+}
+
+/// @brief --> Esta funcion da de baja la Zona
+///
+/// @param --> array Puntero al espacio de memoria donde se buscan los datos a borrar
+/// @param --> len Define el tamanio de la cadena
+/// @param --> idZona Recibe el id de la zona a borrar
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int bajaZona(eZona array[], int len, int idZona)
+{
+	int retorno = -1;
+	int index;
+	int auxId;
+
+	if (array != NULL && len > 0 && idZona > 0)
+	{
+		if(hayZonaPendiente(array, len))
+		{
+			mostrarZonasPendientes(array, len);
+			if(getInt(&auxId, "Ingrese el id de la zona que desea dar de baja (debe estar pendiente): ",
+					"Error, el id no es valido\n\n", 6000,
+					4000, 3)==0)
+			{
+				idZona = auxId;
+			}
+
+			index = buscarZonaPendientePorId(array, len, idZona);
+
+			if(index != -1)
+			{
+				printf("\nSe ha dado de baja el censista: \n");
+				array[index].isEmpty = VACIO;
+				retorno = 0;
+			}
+	    	else
+	    	{
+	    		printf("No hay censista con ese ID\n");
+	    	}
+		}
+    	else
+    	{
+    		printf("No hay ninguna zona pendiente para dar de baja\n");
+    	}
+	}
+
+	return retorno;
+}
+
+/// @brief --> Esta funcion muestra una zona
+///
+/// @param --> unaZona Recibe los datos de la zona a mostrar
 /// @return --> Esta funcion no retorna nada
 void mostrarZona(eZona unaZona)
 {
@@ -141,10 +301,10 @@ void mostrarZona(eZona unaZona)
 	}
 }
 
-/// @brief --> Esta funcion muestra un censista
+/// @brief --> Esta funcion muestra las zonas
 ///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
-/// @return --> Esta funcion no retorna nada
+/// @param --> array Puntero al espacio de memoria donde se buscaran las zonas a mostrar
+/// @return --> Esta funcion retorna 0 si funciono correctamente, o un -1 si no fue asi
 int mostrarZonas(eZona array[], int len)
 {
 	int retorno = -1;
@@ -163,7 +323,14 @@ int mostrarZonas(eZona array[], int len)
 	return retorno;
 }
 
-
+/// @brief --> Esta funcion asigna una zona a un censista
+///
+/// @param --> array Puntero al espacio de memoria donde se buscan los datos de la zona
+/// @param --> len Define el tamanio de la cadena del array de Zonas
+/// @param --> idZona Recibe el id de la Zona a asignar
+/// @param --> arrayCensistas Puntero al espacio de memoria donde se buscan los datos del censista
+/// @param --> lenCensistas Define el tamanio de la cadena del array de censistas
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int asignarZona(eZona array[], int len, int idZona, eCensista arrayCensistas[], int lenCensistas)
 {
 	int retorno = -1;
@@ -206,6 +373,14 @@ int asignarZona(eZona array[], int len, int idZona, eCensista arrayCensistas[], 
 	return retorno;
 }
 
+/// @brief --> Esta funcion carga los datos de la zona al sistema
+///
+/// @param --> array Puntero al espacio de memoria donde se buscan los datos de la zona
+/// @param --> len Define el tamanio de la cadena del array de Zonas
+/// @param --> idZona Recibe el id de la Zona a cargar
+/// @param --> arrayCensistas Puntero al espacio de memoria donde se buscan los datos del censista
+/// @param --> lenCensistas Define el tamanio de la cadena del array de censistas
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
 int cargarDatos(eZona array[], int len, int idZona, eCensista censistas[], int lenCensistas)
 {
 	int retorno = -1;
@@ -268,12 +443,12 @@ int cargarDatos(eZona array[], int len, int idZona, eCensista censistas[], int l
 	return retorno;
 }
 
-///// @brief --> Esta funcion busca un pasajero por el id
+///// @brief --> Esta funcion busca una Zona Pendiente por el id
 /////
-///// @param --> list Puntero al espacio de memoria donde se buscara el pasajero
+///// @param --> array Puntero al espacio de memoria donde se buscara la Zona
 ///// @param --> len Define el tamanio de la cadena
-///// @param --> id recibe el id del pasajero a buscar
-///// @return --> Esta funcion retorna el index del pasajero encontrado
+///// @param --> id recibe el id de la zona a buscar
+///// @return --> Esta funcion retorna el index de la zona encontrada
 int buscarZonaPendientePorId(eZona array[], int len, int idZona)
 {
 	int retorno = -1;
@@ -291,46 +466,36 @@ int buscarZonaPendientePorId(eZona array[], int len, int idZona)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca un pasajero por el id
-///
-/// @param --> list Puntero al espacio de memoria donde se buscara el pasajero
-/// @param --> len Define el tamanio de la cadena
-/// @param --> id recibe el id del pasajero a buscar
-/// @return --> Esta funcion retorna el index del pasajero encontrado
-//int buscarZonaPendientePorId(eZona array[], int len, int idZona, eCensista arrayDos[])
-//{
-//	int retorno = -1;
-//	if (array != NULL && len > 0 && idZona > 0)
-//	{
-//		for (int i = 0; i < len; i++)
-//		{
-//			if (array[i].idZona == idZona && array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
-//			{
-//				for(int j = 0; j < len; j++)
-//				{
-//					if(array[i].idCensista == arrayDos[j].idCensista && arrayDos[j].estado == ACTIVO)
-//					{
-//						printf("Esta zona ya fue asignada a un censista responsable");
-//						retorno = -1;
-//						break;
-//					}
-//					if(array[i].idCensista != arrayDos[j].idCensista && arrayDos[j].estado == LIBERADO)
-//					{
-//						retorno = i;
-//						break;
-//					}
-//				}
-//			}
-//		}
-//	}
-//	return retorno;
-//}
+///// @brief --> Esta funcion busca una Zona por el id
+/////
+///// @param --> array Puntero al espacio de memoria donde se buscara la Zona
+///// @param --> len Define el tamanio de la cadena
+///// @param --> id recibe el id de la zona a buscar
+///// @return --> Esta funcion retorna el index de la zona encontrada
+int buscarZonaPorId(eZona array[], int len, int idZona)
+{
+	int retorno = -1;
+	if (array != NULL && len > 0 && idZona > 0)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			if (array[i].idZona == idZona && array[i].isEmpty == OCUPADO)
+			{
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
 
-
-/// @brief --> Esta funcion muestra un censista
-///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
-/// @return --> Esta funcion no retorna nada
+///// @brief --> Esta funcion muestra las zonas con todos sus datos
+/////
+///// @param --> array Puntero al espacio de memoria donde se buscara la Zona
+///// @param --> len Define el tamanio de la cadena
+///// @param --> censistas Puntero al espacio de memoria donde se buscara el censista
+///// @param --> lenCensistas Define el tamanio de la cadena de censistas
+///// @return --> Esta funcion retorna 0 si se valido correctamente o -1 si no fue asi
 int mostrarZonasCompleto(eZona array[], int len, eCensista censistas[], int lenCensistas)
 {
 	int retorno = -1;
@@ -382,25 +547,10 @@ int mostrarZonasCompleto(eZona array[], int len, eCensista censistas[], int lenC
 	return retorno;
 }
 
-///// @brief --> Esta funcion muestra un censista
-/////
-///// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
-///// @return --> Esta funcion no retorna nada
-//void mostrarZonaPendientes(eZona unaZona)
-//{
-//	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
-//
-//	if(unaZona.isEmpty == 0 && unaZona.estado == PENDIENTE)
-//	{
-//		printf("\n+-----------------------------------------------------------------------------------------------+");
-//		printf("\nID Zona: %d | Calle 1: %d | Calle 2: %d | Calle 3: %d | Calle 4: %d | Localidad: %s", unaZona.idZona,
-//				unaZona.calle[0], unaZona.calle[1], unaZona.calle[2], unaZona.calle[3], localidades[unaZona.localidad]);
-//	}
-//}
-
-/// @brief --> Esta funcion muestra un censista
+/// @brief --> Esta funcion muestra las zonas pendientes
 ///
-/// @param --> unPassenger Puntero al espacio de memoria donde se buscara el censista a mostrar
+///// @param --> array Puntero al espacio de memoria donde se buscara las zonas pendientes
+///// @param --> len Define el tamanio de la cadena
 /// @return --> Esta funcion no retorna nada
 int mostrarZonasPendientes(eZona array[], int len)
 {
@@ -427,9 +577,9 @@ int mostrarZonasPendientes(eZona array[], int len)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca en un array si hay datos cargados
+/// @brief --> Esta funcion busca en un array si hay zonas pendientes cargadas
 ///
-/// @param --> array Puntero al espacio de memoria donde se buscara si hay algo cargado
+/// @param --> array Puntero al espacio de memoria donde se buscara si hay alguna zona pendiente cargada
 /// @param --> len Define el tamaño de cadena
 /// @return --> Esta funcion retorna un 1 si se encontro algo cargado, y un 0 si no fue asi
 int hayZonaPendiente(eZona array[], int len)
@@ -449,9 +599,9 @@ int hayZonaPendiente(eZona array[], int len)
 	return retorno;
 }
 
-/// @brief --> Esta funcion busca en un array si hay datos cargados
+/// @brief --> Esta funcion busca en un array si hay una zona cargada
 ///
-/// @param --> array Puntero al espacio de memoria donde se buscara si hay algo cargado
+/// @param --> array Puntero al espacio de memoria donde se buscara si hay una zona cargada
 /// @param --> len Define el tamaño de cadena
 /// @return --> Esta funcion retorna un 1 si se encontro algo cargado, y un 0 si no fue asi
 int hayZonaCargada(eZona array[], int len)
@@ -473,7 +623,7 @@ int hayZonaCargada(eZona array[], int len)
 
 /// @brief --> Esta funcion hardcodea los datos del array
 ///
-/// @param --> list Puntero al espacio de memoria donde se cargaran los censistas
+/// @param --> list Puntero al espacio de memoria donde se cargaran las zonas
 /// @return --> Esta funcion retorna 0 si se cargo correctamente o -1 si no fue asi
 int cargaForzadaZonas(eZona array[], int len)
 {
@@ -495,11 +645,75 @@ int cargaForzadaZonas(eZona array[], int len)
 		for(i = 0; i < 8; i++)
 		{
 			array[i] = lista[i];
-			retorno = 0;
 		}
+		retorno = 0;
 	}
 
 	return retorno;
 }
 
+/// @brief --> Esta funcion pide y muestra el menu de modificaciones de las zonas
+///
+/// @param --> opcionMenu Puntero al espacio de memoria donde se copiara la opcion del menu obtenida
+/// @return --> Esta funcion retorna un 0 si se ingresaron datos validos, y un -1 si no son validos
+int menuModificacionesZonas(int * opcionMenu)
+{
+	int auxOpcion;
+	int retorno = -1;
+
+	printf("\n************MODIFICACIONES************\n\n");
+	printf("1. CALLE 1 \n");
+	printf("2. CALLE 2 \n");
+	printf("3. CALLE 3 \n");
+	printf("4. CALLE 4 \n");
+	printf("5. LOCALIDAD \n");
+	printf("6. SALIR \n");
+
+	if(getInt(&auxOpcion, "Que desea modificar?: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
+			6, 1, 5)==0)
+	{
+		*opcionMenu = auxOpcion;
+		retorno = 0;
+	}
+
+
+	return retorno;
+
+}
+
+///// @brief --> Esta funcion muestra las zonas pendientes
+/////
+/////// @param --> array Puntero al espacio de memoria donde se buscara las zonas pendientes
+/////// @param --> len Define el tamanio de la cadena
+///// @return --> Esta funcion no retorna nada
+//int mostrarZonasPendientesNoAsignadas(eZona array[], int len, eCensista arrayCensistas[], int lenCensistas)
+//{
+//	int retorno = -1;
+//
+//	char localidades[6][51] = {"", "Hudson", "Ranelagh", "Platanos", "Sourigues", "Gutierrez"};
+//
+//	if(array != NULL && len >0)
+//	{
+//
+//		for(int i = 0; i < len; i++)
+//		{
+//			if(array[i].isEmpty == OCUPADO && array[i].estado == PENDIENTE)
+//			{
+//				for(int j = 0; j < lenCensistas; j++)
+//				{
+//					if(array[i].idCensista == arrayCensistas[j].idCensista &&
+//							(arrayCensistas[j].estado == LIBERADO || arrayCensistas[j].estado == INACTIVO))
+//					printf("\n+-----------------------------------------------------------------------------------------------+");
+//					printf("\nID Zona: %d | Calle 1: %d | Calle 2: %d | Calle 3: %d | Calle 4: %d | Localidad: %s", array[i].idZona,
+//							array[i].calle[0], array[i].calle[1], array[i].calle[2], array[i].calle[3], localidades[array[i].localidad]);
+//					break;
+//				}
+//			}
+//		}
+//		printf("\n+-----------------------------------------------------------------------------------------------+\n");
+//		retorno = 0;
+//	}
+//
+//	return retorno;
+//}
 

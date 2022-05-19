@@ -44,10 +44,4 @@ int getCodeChar(char array[], int len, char * mensaje, char * mensajeError,int m
 int getFloat(float *pNumeroIngresado, char *mensaje, char *mensajeError, int maximo,
 		int minimo, int maximoDeReintentos);
 
-int menuModificaciones(int * opcionMenu);
-
-int subMenuFechaNacimiento(int * opcionMenu);
-
-int subMenuDireccion(int * opcionMenu);
-
 #endif /* BIBLIOTECAUTN_H_ */

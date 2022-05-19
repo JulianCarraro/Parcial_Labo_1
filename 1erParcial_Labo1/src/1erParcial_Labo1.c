@@ -84,10 +84,10 @@ int main(void) {
 				case 5:
 					if(hayCensistaLibreCargado(censista, LEN_CENSISTAS)==1)
 					{
-						printf("\nASIGNAR ZONA A CENSAR\n");
 						if(hayZonaPendiente(zona, LEN_ZONAS) == 1)
 						{
-							mostrarZonasPendientes(zona, LEN_ZONAS);
+							printf("\nASIGNAR ZONA A CENSAR\n");
+							mostrarZonasPendientesNoAsignadas(zona, LEN_ZONAS, censista, LEN_CENSISTAS);
 							if(getInt(&auxIdZona, "Ingrese el ID de la zona que desea censar: ",
 										"ERROR. Ingreso una id incorrecto\n\n", 6000, 4000, 3)==0)
 							{
@@ -150,6 +150,7 @@ int main(void) {
 				case 11:
 					break;
 			}
+
 		}
 
 	}while(opcionMenu != 11);
