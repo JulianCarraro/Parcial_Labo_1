@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "bibliotecaUtn.h"
+#include "Controller.h"
 
 /// @brief --> Esta funcion reserva espacio de memoria a un pasajero
 ///
@@ -983,4 +984,336 @@ int Passenger_findPassengerById(LinkedList* pArrayListPassenger, int idABuscar)
 
 	return retorno;
 }
+
+int Passenger_filtrarYMostrar(LinkedList* this, int (*pFunc)(void*,int))
+{
+	int returnAux = -1;
+    LinkedList* auxLinkedList = ll_newLinkedList(); // creo una lista auxiliar
+    int longitud;
+    Passenger* auxPassenger = NULL;
+
+    if(this != NULL && pFunc != NULL)
+    {
+    	longitud = ll_len(this);
+    	if(longitud >= 0)
+    	{
+    		for(int i = 0; i<longitud; i++)
+    		{
+    			auxPassenger = ll_get(this, i);
+    			if(pFunc(auxPassenger,1) == 0 && !ll_add(auxLinkedList, auxPassenger))
+    			{
+    				returnAux = 0;
+    			}
+    		}
+    	}
+    }
+    controller_ListPassenger(auxLinkedList);
+    returnAux = ll_len(auxLinkedList);
+    ll_deleteLinkedList(auxLinkedList);
+    return returnAux;
+}
+
+int Passenger_filtrarEstadoVuelo(void* parametro, int estadoVuelo)
+{
+	int retorno = -1;
+	int auxEstadoVuelo;
+	if(parametro != NULL)
+	{
+		Passenger_getEstadoVuelo(parametro, &auxEstadoVuelo);
+		if(auxEstadoVuelo == estadoVuelo)
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+//a. Informar cantidad de demorados y ejecutiva
+
+
+int Passenger_cantidadDemoradosYExecutiveClass(LinkedList* this, int (*pFunc)(void*,int), int (*pFunc2)(void*,int))
+{
+	int returnAux = -1;
+    LinkedList* auxLinkedList = ll_newLinkedList(); // creo una lista auxiliar
+    int longitud;
+    Passenger* auxPassenger = NULL;
+
+    if(this != NULL && pFunc != NULL)
+    {
+    	longitud = ll_len(this);
+    	if(longitud >= 0)
+    	{
+    		for(int i = 0; i<longitud; i++)
+    		{
+    			auxPassenger = ll_get(this, i);
+    			if(pFunc(auxPassenger,4) == 0 && pFunc2(auxPassenger, 2) == 0 && !ll_add(auxLinkedList, auxPassenger))
+    			{
+    				returnAux = 0;
+    			}
+    		}
+    	}
+    }
+//    controller_ListPassenger(auxLinkedList);
+    returnAux = ll_len(auxLinkedList);
+    ll_deleteLinkedList(auxLinkedList);
+    return returnAux;
+}
+
+int Passenger_filtrarTipoDePasajero(void* parametro, int tipoDePasajero)
+{
+	int retorno = -1;
+	int auxTipoDePasajero;
+	if(parametro != NULL && tipoDePasajero > 0 && tipoDePasajero < 4)
+	{
+		Passenger_getTipoPasajero(parametro, &auxTipoDePasajero);
+		if(auxTipoDePasajero == tipoDePasajero)
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+//b. Mostrar el listado de pasajeros de primera clase ordenados alfabéticamente por apellido y nombre.
+
+int Passenger_ordenarPrimeraClaseAscendente(LinkedList* this, int (*pFunc)(void*,int))
+{
+	int retorno = -1;
+	int len;
+	LinkedList* auxLinkedList = ll_newLinkedList();
+	Passenger* auxPassenger;
+
+	if(this != NULL && pFunc != NULL)
+	{
+		len = ll_len(this);
+		if(len >= 0)
+		{
+			for(int i = 0; i<len; i++)
+			{
+				auxPassenger = ll_get(this, i);
+				if(pFunc(auxPassenger, 1) == 0 && ll_add(auxLinkedList, auxPassenger) == 0)
+				{
+					retorno = 0;
+				}
+			}
+			ll_sort(auxLinkedList, Passenger_compareLastNameYName, 1);
+			controller_ListPassenger(auxLinkedList);
+			ll_deleteLinkedList(auxLinkedList);
+		}
+
+	}
+	return retorno;
+}
+
+/// @brief --> Esta funcion compara los apellidos y por nombres de dos pasajeros
+///
+/// @param --> firstPassenger Retorna el pasajero por referencia
+/// @param --> secondPassenger Retorna el pasajero por referencia
+/// @return --> Esta funcion retorna 1 si el primer pasajero es mayor, 0 si son iguales o -1 si el segundo pasajero es mayor
+int Passenger_compareLastNameYName(void * firstPassenger, void * secondPassenger)
+{
+	int retorno = -1;
+
+	if(firstPassenger != NULL && secondPassenger != NULL)
+	{
+		retorno = Passenger_compareLastName(firstPassenger, secondPassenger);
+
+		if(retorno == 0)
+		{
+			retorno = Passenger_compareName(firstPassenger, secondPassenger);
+		}
+	}
+
+	return retorno;
+}
+
+float promedioPrecioDemorados(LinkedList* this, int(*pFunc)(void*, int))
+{
+    int contador = 0;
+    int acumulador = 0;
+    float auxPrecio;
+    float promedio = 0;
+    int len;
+    Passenger* pPasajero = NULL;
+
+    if(this != NULL && pFunc != NULL)
+    {
+        len = ll_len(this);
+        for(int i = 0; i < len; i++)
+        {
+            pPasajero = (Passenger*)ll_get(this, i);
+            if(!pFunc(pPasajero, 4) == 0)
+            {
+                Passenger_getPrecio(pPasajero, &auxPrecio);
+                acumulador += auxPrecio;
+                contador++;
+            }
+        }
+        if(contador > 0)
+        {
+            promedio = (float)acumulador / contador;
+        }
+    }
+    return promedio;
+}
+
+int contadorPrimeraClase(void* element)
+{
+	int contador;
+	int auxTipoDePasajero;
+
+	if(element != NULL)
+	{
+		Passenger_getTipoPasajero((Passenger*)element, &auxTipoDePasajero);
+		if(auxTipoDePasajero == 1)
+		{
+			contador = 1;
+		}
+
+	}
+
+	return contador;
+}
+
+int contadorClaseEjecutiva(void* element)
+{
+	int contador;
+	int auxTipoDePasajero;
+
+	if(element != NULL)
+	{
+		Passenger_getTipoPasajero((Passenger*)element, &auxTipoDePasajero);
+		if(auxTipoDePasajero == 2)
+		{
+			contador = 1;
+		}
+
+	}
+
+	return contador;
+}
+
+int contadorClaseEconomica(void* element)
+{
+	int contador;
+	int auxTipoDePasajero;
+
+	if(element != NULL)
+	{
+		Passenger_getTipoPasajero((Passenger*)element, &auxTipoDePasajero);
+		if(auxTipoDePasajero == 3)
+		{
+			contador = 1;
+		}
+
+	}
+
+	return contador;
+}
+
+int primeraClase(void* element)
+{
+	int retorno = -1;
+	int auxTipoDePasajero;
+
+	if(element != NULL)
+	{
+		Passenger_getTipoPasajero((Passenger*)element, &auxTipoDePasajero);
+		if(auxTipoDePasajero == 1)
+		{
+			retorno = 0;
+		}
+
+	}
+
+	return retorno;
+}
+
+int Passenger_setMillas(Passenger* this,float millas)
+{
+	int retorno = -1;
+
+	if (this != NULL)
+	{
+		this->millas = millas;
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+int Passenger_getMillas(Passenger* this,float* millas)
+{
+	int retorno = -1;
+
+	if(this != NULL && millas != NULL)
+	{
+		*millas = this->millas;
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+void printTitleMillas()
+{
+	printf("+--------------------------------------------------------------------------------------------------------+");
+	printf("\n|%4s |%15s |%15s |%12s |%13s |%15s |%15s |%12s|\n", "ID", "NOMBRE", "APELLIDO", "PRECIO", "CODIGO DE VUELO", "TIPO DE PASAJERO", "ESTADO DE VUELO", "MILLAS");
+	printf("+-----+----------------+----------------+-------------+----------------+-----------------+---------------+\n");
+}
+
+void Passenger_printOneWithMillas(Passenger * this)
+{
+	int id;
+	char nombre[256];
+	char apellido[256];
+	float precio;
+	int tipoPasajero;
+	char codigoVuelo[256];
+	int estadoDeVuelo;
+	char auxTipoPasajero[256];
+	char auxEstadoDeVuelo[256];
+	float millas;
+
+	if(this != NULL)
+	{
+		if(Passenger_getAll(this, &id, nombre, apellido, &precio, &tipoPasajero, codigoVuelo, &estadoDeVuelo)==0)
+		{
+			if(Passenger_getMillas(this, &millas)==0)
+			{
+				convertTypePassengerToChar(tipoPasajero,auxTipoPasajero);
+				convertStatusFlightToChar(estadoDeVuelo,auxEstadoDeVuelo);
+				printf("|%4d |%15s |%15s |%12.2f |%15s |%16s |%15s |%12.2f|\n", id, nombre, apellido, precio, codigoVuelo, auxTipoPasajero, auxEstadoDeVuelo, millas);
+			}
+		}
+	}
+}
+
+void calcular(void* element)
+{
+//	Passenger* auxPassenger;
+	float auxPrecio;
+	int auxTipoDePasajero;
+	float millas;
+
+	if(element != NULL)
+	{
+		Passenger_getPrecio((Passenger*)element, &auxPrecio);
+		Passenger_getTipoPasajero((Passenger*)element, &auxTipoDePasajero);
+
+		millas = auxPrecio / 100;
+
+		if(auxTipoDePasajero == 1)
+		{
+			millas = millas * 2;
+		}
+		else if(auxTipoDePasajero == 2)
+		{
+			millas = millas * 3;
+		}
+
+		Passenger_setMillas((Passenger*)element, millas);
+	}
+}
+
 

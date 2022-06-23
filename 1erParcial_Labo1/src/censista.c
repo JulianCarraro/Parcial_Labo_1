@@ -65,94 +65,106 @@ int cargarCensista(eCensista array[], int len) {
 	int auxEdad;
 	int auxCalle;
 	int auxNumeroCasa;
-	int flag;
-
-	flag = 0;
 
 	if (array != NULL && len > 0) {
 		indexLibre = buscarIndexPorIsEmpty(array, len);
 		if (indexLibre != -1) {
 			if(getChars(auxNombre, sizeof(auxNombre), "Ingrese un nombre: ", "ERROR. Ingreso un nombre invalido\n\n",
-					3)==0)
+					3)==0 && getChars(auxApellido, sizeof(auxApellido), "Ingrese un apellido: ", "ERROR. Ingreso un apellido invalido\n\n",
+							3)==0 && pedirFechaNacimiento(&auxAnioNacimiento, &auxMesNacimiento, &auxDiaNacimiento, &auxEdad) == 0
+									&& getInt(&auxCalle, "Ingrese la calle del domicilio: ", "ERROR. Ingreso una calle invalida\n\n",
+															999, 1, 3)==0 && getInt(&auxNumeroCasa, "Ingrese el numero de casa del domicilio: ", "ERROR. Ingreso un numero de casa invalido\n\n",
+																	9999, 100, 3)==0)
 			{
 				strncpy(array[indexLibre].nombre, auxNombre, sizeof(array[indexLibre].nombre));
-				flag = 1;
-			}
-			if(flag == 1)
-			{
-				flag = 0;
-				if(getChars(auxApellido, sizeof(auxApellido), "Ingrese un apellido: ", "ERROR. Ingreso un apellido invalido\n\n",
-						3)==0)
-				{
-					strncpy(array[indexLibre].apellido, auxApellido, sizeof(array[indexLibre].apellido));
-					flag = 1;
-				}
-			}
-			if(flag == 1)
-			{
-				flag = 0;
-				if(getInt(&auxAnioNacimiento, "Ingrese el anio de nacimiento (Mayor de 18 anios): ", "ERROR. Ingreso un anio invalido\n\n",
-						2004, 1970, 3)==0)
-				{
-					array[indexLibre].fecha.anioNacimiento = auxAnioNacimiento;
-					flag = 1;
-				}
-			}
-			if(flag == 1)
-			{
-				flag = 0;
-				if(getInt(&auxMesNacimiento, "Ingrese el mes de nacimiento: ", "ERROR. Ingreso un mes invalido\n\n",
-						12, 1, 3)==0)
-				{
-					array[indexLibre].fecha.mesNacimiento = auxMesNacimiento;
-					flag = 1;
-				}
-			}
-			if(flag == 1)
-			{
-				flag = 0;
-				if(getInt(&auxDiaNacimiento, "Ingrese el dia de nacimiento: ", "ERROR. Ingreso un dia invalido\n\n",
-						31, 1, 3)==0)
-				{
-					array[indexLibre].fecha.diaNacimiento = auxDiaNacimiento;
-					flag = 1;
-				}
-			}
-
-			auxEdad = edadCensista(array[indexLibre].fecha.anioNacimiento, array[indexLibre].fecha.mesNacimiento);
-			if(auxEdad > 17)
-			{
+				strncpy(array[indexLibre].apellido, auxApellido, sizeof(array[indexLibre].apellido));
+				array[indexLibre].fecha.anioNacimiento = auxAnioNacimiento;
+				array[indexLibre].fecha.mesNacimiento = auxMesNacimiento;
+				array[indexLibre].fecha.diaNacimiento = auxDiaNacimiento;
 				array[indexLibre].edad = auxEdad;
+				array[indexLibre].edad = auxEdad;
+				array[indexLibre].direccion.calle = auxCalle;
+				array[indexLibre].direccion.numeroDeCasa = auxNumeroCasa;
+				array[indexLibre].idCensista = incrementarId();
+				array[indexLibre].estado = LIBERADO;
+				array[indexLibre].isEmpty = OCUPADO;
+				printTitle();
+				mostrarCensista(array[indexLibre]);
+				retorno = 0;
 			}
-			else
-			{
-				printf("\nEl censista es menor de 18 anios\n");
-				flag = 0;
-			}
+		}
+	}
 
-			if(flag == 1)
+	return retorno;
+}
+
+int pedirFechaNacimiento(int * anioNacimiento, int * mesNacimiento, int * diaNacimiento, int * edad)
+{
+	int retorno = -1;
+	int auxAnioNacimiento;
+	int auxMesNacimiento;
+	int auxDiaNacimiento;
+	int auxEdad;
+
+	if(getInt(&auxAnioNacimiento, "Ingrese el anio de nacimiento (Mayor de 18 anios): ", "ERROR. Ingreso un anio invalido\n\n",
+										2004, 1970, 3)==0)
+	{
+		*anioNacimiento = auxAnioNacimiento;
+		if(getInt(&auxMesNacimiento, "Ingrese el mes de nacimiento (Mayor de 18 anios): ", "ERROR. Ingreso un anio invalido\n\n",
+											12, 1, 3)==0)
+		{
+			*mesNacimiento = auxMesNacimiento;
+			if(pedirDiaConMesValidado(mesNacimiento, &auxDiaNacimiento)==0)
 			{
-				flag = 0;
-				if(getInt(&auxCalle, "Ingrese la calle del domicilio: ", "ERROR. Ingreso una calle invalida\n\n",
-						999, 1, 3)==0)
+				*diaNacimiento = auxDiaNacimiento;
+				auxEdad = edadCensista(*anioNacimiento, *mesNacimiento);
+				if(auxEdad > 17)
 				{
-					array[indexLibre].direccion.calle = auxCalle;
-					flag = 1;
-				}
-			}
-			if(flag == 1)
-			{
-				if(getInt(&auxNumeroCasa, "Ingrese el numero de casa del domicilio: ", "ERROR. Ingreso un numero de casa invalido\n\n",
-						9999, 100, 3)==0)
-				{
-					array[indexLibre].direccion.numeroDeCasa = auxNumeroCasa;
-					array[indexLibre].idCensista = incrementarId();
-					array[indexLibre].estado = LIBERADO;
-					array[indexLibre].isEmpty = OCUPADO;
-					printTitle();
-					mostrarCensista(array[indexLibre]);
+					*edad = auxEdad;
 					retorno = 0;
 				}
+				else
+				{
+					printf("\nEl censista es menor de 18 anios\n");
+				}
+
+			}
+		}
+	}
+
+	return retorno;
+}
+
+int pedirDiaConMesValidado(int * mesNacimiento, int * diaNacimiento)
+{
+	int retorno = -1;
+	int auxDiaNacimiento;
+
+	if(*mesNacimiento == 1 || *mesNacimiento == 3 || *mesNacimiento == 5 || *mesNacimiento == 7 ||
+			*mesNacimiento == 8 || *mesNacimiento == 10 || *mesNacimiento == 12)
+	{
+		if(getInt(&auxDiaNacimiento, "Ingrese el dia de nacimiento: ", "ERROR. Ingreso un dia invalido\n\n", 31, 1, 3)==0)
+		{
+			*diaNacimiento = auxDiaNacimiento;
+			retorno = 0;
+		}
+	}
+	else
+	{
+		if(*mesNacimiento == 4 || *mesNacimiento == 6 || *mesNacimiento == 9 || *mesNacimiento == 11)
+		{
+			if(getInt(&auxDiaNacimiento, "Ingrese el dia de nacimiento: ", "ERROR. Ingreso un dia invalido\n\n", 30, 1, 3)==0)
+			{
+				*diaNacimiento = auxDiaNacimiento;
+				retorno = 0;
+			}
+		}
+		else
+		{
+			if(getInt(&auxDiaNacimiento, "Ingrese el dia de nacimiento: ", "ERROR. Ingreso un dia invalido\n\n", 28, 1, 3)==0)
+			{
+				*diaNacimiento = auxDiaNacimiento;
+				retorno = 0;
 			}
 		}
 	}

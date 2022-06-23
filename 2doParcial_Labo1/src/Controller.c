@@ -436,4 +436,71 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
     return retorno;
 }
 
+int controller_saveAsPassengersFirstClass(char* path , LinkedList* pArrayListPassenger)
+{
+	int retorno = -1;
+	Passenger * auxPassenger;
+	int tamanio;
+	int auxId;
+	char auxName[256];
+	char auxLastName[256];
+	float auxPrice;
+	int auxTypePassenger;
+	char typePassenger[256];
+	char auxFlyCode[256];
+	int auxStatusFlight;
+	char statusFlight[256];
+	FILE * pFile;
 
+	pFile = NULL;
+
+	if(path != NULL && pArrayListPassenger != NULL)
+	{
+		pFile = fopen(path, "w");
+		if(pFile != NULL)
+		{
+			tamanio = ll_len(pArrayListPassenger);
+			fprintf(pFile, "Id,Nombre,Apellido,Precio,CodigoDeVuelo,TipoDePasajero,EstadoDelVuelo\n");
+			for(int i = 0; i < tamanio; i++)
+			{
+				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
+				if(Passenger_getAll(auxPassenger, &auxId, auxName, auxLastName, &auxPrice, &auxTypePassenger, auxFlyCode, &auxStatusFlight)==0)
+				{
+					convertTypePassengerToChar(auxTypePassenger,typePassenger);
+					convertStatusFlightToChar(auxStatusFlight,statusFlight);
+					fprintf(pFile, "%d,%s,%s,%.2f,%s,%s,%s\n", auxId, auxName, auxLastName, auxPrice, auxFlyCode, typePassenger, statusFlight);
+				}
+			}
+
+			retorno = 0;
+		}
+	}
+
+	fclose(pFile);
+
+    return retorno;
+}
+
+int controller_ListPassengerWithMillas(LinkedList* pArrayListPassenger)
+{
+	int retorno = -1;
+	Passenger * auxPassenger;
+	int tamanio;
+
+	if(pArrayListPassenger != NULL)
+	{
+		tamanio = ll_len(pArrayListPassenger);
+		if(tamanio > 0)
+		{
+			printTitleMillas();
+			for(int i = 0; i < tamanio; i++)
+			{
+				auxPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
+				Passenger_printOneWithMillas(auxPassenger);
+			}
+			retorno = 0;
+		}
+	}
+
+    return retorno;
+}

@@ -400,9 +400,12 @@ int menuPrincipal(int * opcionMenu)
 	printf("8. Guardar los datos de los pasajeros en el archivo data.csv (modo texto) \n");
 	printf("9. Guardar los datos de los pasajeros en el archivo data.bin (modo binario) \n");
 	printf("10. SALIR \n");
+	printf("11. Pasajeros por clase \n");
+	printf("12. Generar archivo de vuelos \n");
+	printf("13. Calcular millas acumuladas \n");
 
 	if(getInt(&auxOpcion, "Ingrese una opcion: ", "ERROR. Ingresaste una opcion incorrecta.\n\n",
-			10, 1, 5)==0)
+			13, 1, 5)==0)
 	{
 		*opcionMenu = auxOpcion;
 		retorno = 0;

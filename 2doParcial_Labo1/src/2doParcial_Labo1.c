@@ -28,12 +28,17 @@ int main() {
 	int flag;
 	int flagCargaArchivo;
 	int flagSave;
+	int cantidad;
+	int criterio;
 
 	LinkedList *lista = ll_newLinkedList();
+	LinkedList *listaPrimeraClase = ll_newLinkedList();
+	LinkedList *listaConMillas = ll_newLinkedList();
 	respuesta = 'n';
 	flag = 0;
 	flagCargaArchivo = 0;
 	flagSave = 0;
+	cantidad = 0;
 
 	do
 	{
@@ -189,6 +194,52 @@ int main() {
 						else
 						{
 							printf("\nDebe guardar los datos para poder salir\n");
+						}
+						break;
+					case 11:
+						if(getInt(&criterio, "\nQue tipo de pasajero desea contar?\n1.FirstClass\n2.ExecutiveClass\n3. EconomyClass\nElija una opcion: ",
+								"Ingreso una opcion incorrecta", 3, 1, 5)==0)
+						{
+							switch(criterio)
+							{
+								case 1:
+									cantidad = ll_count(lista, contadorPrimeraClase);
+									printf("\nLa cantidad de pasajeros de primera clase es: %d\n", cantidad);
+									break;
+								case 2:
+									cantidad = ll_count(lista, contadorClaseEjecutiva);
+									printf("\nLa cantidad de pasajeros de clase ejecutiva es: %d\n", cantidad);
+									break;
+								case 3:
+									cantidad = ll_count(lista, contadorClaseEconomica);
+									printf("\nLa cantidad de pasajeros de clase economica es: %d\n", cantidad);
+									break;
+							}
+						}
+						break;
+					case 12:
+						if(ll_isEmpty(lista)==0)
+						{
+							listaPrimeraClase = ll_filter(lista, primeraClase);
+							if(controller_saveAsPassengersFirstClass("PPrimeraClase.csv", listaPrimeraClase)==0)
+							{
+								printf("\nSe han cargado correctamente los pasajeros de primera clase\n");
+							}
+						}
+						else
+						{
+							printf("\nNo hay pasajeros cargados\n");
+						}
+						break;
+					case 13:
+						if(ll_isEmpty(lista)==0)
+						{
+							listaConMillas = ll_map(lista, calcular);
+							controller_ListPassengerWithMillas(listaConMillas);
+						}
+						else
+						{
+							printf("\nNo hay pasajeros cargados para filtrar\n");
 						}
 						break;
 				}

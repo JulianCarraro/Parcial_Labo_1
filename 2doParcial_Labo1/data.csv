@@ -968,18 +968,18 @@ Id,Nombre,Apellido,Precio,CodigoDeVuelo,TipoDePasajero,EstadoDelVuelo
 967,Leanor,Jayume,9511.42,OF9437K,FirstClass,EN VUELO
 968,Vassily,Hatt,51196.79,HB7844A,EconomyClass,EN VUELO
 969,Patsy,Magrannell,18738.08,WQ8128V,FirstClass,DEMORADO
-970,Linea,Scurry,17906.48,SW9696L,FirstClass,DEMORADO
+970,Linea,Jonin,17906.48,SW9696L,FirstClass,DEMORADO
 971,Anet,Meighan,8312.57,FI6913M,EconomyClass,ATERRIZADO
 972,Nichol,Pavese,9747.17,HF9475C,EconomyClass,EN HORARIO
 973,Ashil,Payton,27344.11,ML4297X,EconomyClass,EN HORARIO
 974,Mandi,Maryan,55292.66,OA0678F,ExecutiveClass,DEMORADO
-975,Deane,Lie,40516.47,FB2786Y,FirstClass,ATERRIZADO
+975,Deane,Jonin,40516.47,FB2786Y,FirstClass,ATERRIZADO
 976,Holly,Jee,86387.03,IS0475L,EconomyClass,EN HORARIO
 977,Lenard,Dik,81467.78,DC8163V,ExecutiveClass,EN HORARIO
 978,Nataline,Lourens,49968.79,CW1802X,FirstClass,DEMORADO
 979,Pegeen,Gofforth,93438.06,WK1113Z,ExecutiveClass,EN VUELO
 980,Curtis,Tippin,84867.78,ER2034A,ExecutiveClass,DEMORADO
-981,Marlin,Bownass,46720.77,DV3950M,FirstClass,EN HORARIO
+981,Marlin,Jonin,46720.77,DV3950M,FirstClass,EN HORARIO
 982,Jerrilyn,Dade,80678.91,JT1021G,ExecutiveClass,ATERRIZADO
 983,Suellen,Kinloch,83754.46,ZD9695S,EconomyClass,EN VUELO
 984,Lynne,Stanes,78058.31,II0041S,ExecutiveClass,EN HORARIO
@@ -988,7 +988,7 @@ Id,Nombre,Apellido,Precio,CodigoDeVuelo,TipoDePasajero,EstadoDelVuelo
 987,Frederick,Steward,61256.75,IQ9625V,ExecutiveClass,EN HORARIO
 988,Alphonse,Sandiford,25257.86,PS8611U,EconomyClass,ATERRIZADO
 989,Lindsey,Yukhtin,23858.30,DZ4844V,EconomyClass,ATERRIZADO
-990,Wolf,Ambrozik,90855.23,ZU7102U,FirstClass,EN VUELO
+990,Wolf,Jonin,90855.23,ZU7102U,FirstClass,EN VUELO
 991,Etan,Kynan,76854.62,BF9201W,EconomyClass,EN HORARIO
 992,Adrianne,MacCard,37492.38,IB3635X,ExecutiveClass,EN HORARIO
 993,Trenna,Halksworth,22752.35,SQ0230A,ExecutiveClass,EN HORARIO
@@ -999,6 +999,3 @@ Id,Nombre,Apellido,Precio,CodigoDeVuelo,TipoDePasajero,EstadoDelVuelo
 998,Twyla,Treat,35619.21,EE6839X,EconomyClass,DEMORADO
 999,Jamie,Jonin,39382.40,WI0784U,FirstClass,EN HORARIO
 1000,Rachael,Scougal,35465.85,HM8769L,EconomyClass,EN HORARIO
-
-
-

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "LinkedList.h"
+#include "Passenger.h"
 
 
 static Node* getNode(LinkedList* this, int nodeIndex);
@@ -383,7 +384,7 @@ int ll_push(LinkedList* this, int index, void* pElement)
 
     //La diferencia entre addNode y ll_push es que en esta funcion,
     //addNode agrega y enlaza un nuevo nodo a la lista, es una funcion static que se usa solo en este archivo
-    //
+
     if(this != NULL && index >= 0 && index <= ll_len(this))
     {
     	returnAux = addNode(this, index, pElement);
@@ -568,5 +569,71 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
     return returnAux;
 
+}
+
+int ll_count(LinkedList* this, int (*fn)(void* element))
+{
+	int contador = 0;
+	int retorno = 0;
+	int len;
+	Passenger* auxPassenger;
+
+	if(this != NULL && fn != NULL)
+	{
+		len = ll_len(this);
+		for(int i = 0; i < len; i++)
+		{
+			auxPassenger = ll_get(this, i);
+			contador = fn(auxPassenger);
+			if(contador == 1)
+			{
+				retorno += contador;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+LinkedList* ll_filter(LinkedList* this, int (*fn)(void* element))
+{
+	int len;
+	Passenger* auxPassenger;
+	LinkedList* newLinkedList = ll_newLinkedList(); //Passenger_new
+
+	if(this != NULL && fn != NULL)
+	{
+		len = ll_len(this);
+		for(int i = 0; i < len; i++)
+		{
+			auxPassenger = ll_get(this, i);
+			if(fn(auxPassenger)==0)
+			{
+				ll_add(newLinkedList, auxPassenger);
+			}
+		}
+	}
+
+	return newLinkedList;
+}
+
+LinkedList* ll_map(LinkedList* this, void (*fn)(void* element))
+{
+	int len;
+	LinkedList* newLinkedList = ll_newLinkedList();
+	Passenger* auxPassenger;
+
+	if(this != NULL && fn != NULL)
+	{
+		len = ll_len(this);
+		for(int i = 0; i < len; i++)
+		{
+			auxPassenger = ll_get(this, i);
+			fn(auxPassenger);
+			ll_add(newLinkedList, auxPassenger);
+		}
+	}
+
+	return newLinkedList;
 }
 

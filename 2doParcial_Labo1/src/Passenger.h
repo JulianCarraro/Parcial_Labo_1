@@ -19,6 +19,7 @@ typedef struct
 	char codigoVuelo[10];
 	int tipoPasajero;
 	int estadoVuelo;
+	float millas;
 }Passenger;
 
 Passenger* Passenger_new();
@@ -74,5 +75,23 @@ int convertTypePassengerToChar(int typePassengerInt,char typePassenger[]);
 int convertStatusFlightToChar(int flightStatusInt, char flightStatus[]);
 
 int buscarStatusFlightByFlyCode(LinkedList* pArrayListPassenger, char flyCode[]);
+int Passenger_filtrarYMostrar(LinkedList* this, int (*pFunc)(void*,int));
+int Passenger_filtrarEstadoVuelo(void* parametro, int estadoVuelo);
+int Passenger_cantidadDemoradosYExecutiveClass(LinkedList* this, int (*pFunc)(void*,int), int (*pFunc2)(void*,int));
+int Passenger_filtrarTipoDePasajero(void* parametro, int tipoDePasajero);
+int Passenger_ordenarPrimeraClaseAscendente(LinkedList* this, int (*pFunc)(void*,int));
+int Passenger_compareLastNameYName(void * firstPassenger, void * secondPassenger);
+float promedioPrecioDemorados(LinkedList* this, int(*pFunc)(void*, int));
+
+int contadorPrimeraClase(void* element);
+int contadorClaseEjecutiva(void* element);
+int contadorClaseEconomica(void* element);
+int primeraClase(void* element);
+
+int Passenger_setMillas(Passenger* this,float millas);
+int Passenger_getMillas(Passenger* this,float* millas);
+void printTitleMillas();
+void Passenger_printOneWithMillas(Passenger * this);
+void calcular(void* element);
 
 #endif /* PASSENGER_H_ */

@@ -70,4 +70,8 @@ int subMenuFechaNacimiento(int * opcionMenu);
 
 int subMenuDireccion(int * opcionMenu);
 
+int pedirDiaConMesValidado(int * mesNacimiento, int * diaNacimiento);
+
+int pedirFechaNacimiento(int * anioNacimiento, int * mesNacimiento, int * diaNacimiento, int * edad);
+
 #endif /* CENSISTA_H_ */
